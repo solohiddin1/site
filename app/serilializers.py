@@ -7,7 +7,20 @@ from .models import (
 	Product,
 	ProductTranslation,
 	ProductImage,
+	Certificates,
+	Company
 )
+
+class CertificatesSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Certificates
+		fields = ['id', 'image', 'ordering']
+	
+
+class CompanySerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Company
+		fields = ['id', 'name', 'address', 'phone', 'email', 'about_us','language']
 
 
 class LanguageSerializer(serializers.ModelSerializer):

@@ -20,6 +20,7 @@ class Language(models.Model):
 class Category(models.Model):
     # Optionally categories can be translated too; keep a simple name for now.
     name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='categories/', blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -130,3 +131,28 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"Image {self.pk} for Product {self.product_id}"
+
+
+class Certificates(models.Model):
+    """Multiple images per product.
+
+    """
+    image = models.ImageField(upload_to='certificates/')
+    ordering = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"Image"
+    
+
+class Company(models.Model):
+    """Company info model
+    """
+    name = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+    phone = models.CharField(max_length=50)
+    email = models.EmailField()
+    language = models.ForeignKey(Language, on_delete=models.CASCADE)
+    about_us = models.TextField()
+
+    def __str__(self):
+        return f"Company: {self.name}"
