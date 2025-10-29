@@ -9,11 +9,14 @@ from .serilializers import (
     ProductImageSerializer,
     CertificatesSerializer,
     CompanySerializer,
+    CategoryTranlationSerializer
 )
 from rest_framework.decorators import APIView
 from rest_framework.response import Response
 
 # Create your views here.
+
+# class CategoryTranslationSerializer(APIView)
 
 class CertificatesViewSet(viewsets.ModelViewSet):
     queryset = Certificates.objects.all()
@@ -65,6 +68,15 @@ class ProductView(APIView):
         return Response(serializer.data)
 
 
+class ProductImageView(APIView):
+    def get(self,request):
+        product_id = self.request.query_params.get('product')
+        images = ProductImage.objects.filter(product_id=product_id)
+        print(images)
+        serializer = ProductImageSerializer(images, many=True, context={'request': request})
+        return Response(serializer.data)
+
+
 class ProductTranslationViewDetail(APIView):
     def get(self, request):
         product_id = self.request.query_params.get('product')
@@ -81,6 +93,7 @@ class ProductTranslationViewDetail(APIView):
             print(default_lang)
             default_product = ProductTranslation.objects.filter(product_id=product_id, language_id=default_lang.id).first()
             if default_product:
+                print("entered to default")
                 serializer = ProductTranslationSerializer(default_product)
                 return Response(serializer.data)
         return Response(status=404)

@@ -25,6 +25,20 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+class CategoryTranslation(models.Model):
+    """
+    Translatable fields for Category.
+    Each category can have multiple CategoryTranslation rows, one per language.
+    """
+    category = models.ForeignKey(Category, related_name='translations', on_delete=models.CASCADE)
+    language = models.ForeignKey(Language, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+
+    class Meta:
+        unique_together = (('category', 'language'),)
+
+    def __str__(self):
+        return f"{self.category_id} - {self.language.code}: {self.name}"
 
 class Product(models.Model):
     """Core product model. Translatable fields live in ProductTranslation.
@@ -117,8 +131,8 @@ class ProductTranslation(models.Model):
 
 
 class ProductImage(models.Model):
-    """Multiple images per product.
-
+    """
+    Multiple images per product.
     Store ordering so admin can control image order. Use an ImageField for uploads.
     """
     product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)

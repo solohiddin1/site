@@ -8,8 +8,15 @@ from .models import (
 	ProductTranslation,
 	ProductImage,
 	Certificates,
-	Company
+	Company,
+	CategoryTranslation
 )
+
+class CategoryTranlationSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = CategoryTranslation
+		fields = ['id', 'category', 'language', 'name']
+
 
 class CertificatesSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -43,6 +50,7 @@ class ProductTranslationSerializer(serializers.ModelSerializer):
 		model = ProductTranslation
 		fields = ['id', 'language', 'name', 'description', 'slug']
 
+from django.conf import settings
 
 class ProductImageSerializer(serializers.ModelSerializer):
 	id = serializers.IntegerField(required=False)
@@ -51,6 +59,12 @@ class ProductImageSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = ProductImage
 		fields = ['id', 'image', 'alt', 'ordering']
+
+	def get_image(self, obj):
+		request = self.context.get('request')
+		if obj.image and request:
+			return request.build_absolute_uri(obj.image.url)
+		return f"{settings.BACKEND_URL}{obj.image.url}" if obj.image else None
 
 
 class ProductSerializer(serializers.ModelSerializer):
