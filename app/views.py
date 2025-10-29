@@ -63,7 +63,7 @@ class ProductView(APIView):
         serializer = ProductSerializer(product)
 
         return Response(serializer.data)
-    
+
 
 class ProductTranslationViewDetail(APIView):
     def get(self, request):
