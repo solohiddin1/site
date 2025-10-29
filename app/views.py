@@ -18,31 +18,44 @@ from rest_framework.response import Response
 
 # class CategoryTranslationSerializer(APIView)
 
-class CertificatesViewSet(viewsets.ModelViewSet):
-    queryset = Certificates.objects.all()
-    serializer_class = CertificatesSerializer
+class CertificatesViewSet(APIView):
+    def get(self, request):
+        certificates = Certificates.objects.all()
+        serializer = CertificatesSerializer(certificates, many=True,context={'request': request})
+        return Response(serializer.data)
 
-class CompanyViewSet(viewsets.ModelViewSet):
-    queryset = Company.objects.all()
-    serializer_class = CompanySerializer
+class CompanyViewSet(APIView):
+    def get(self, request):
+        companies = Company.objects.all()
+        serializer = CompanySerializer(companies, many=True)
+        return Response(serializer.data)
 
-class LanguageViewSet(viewsets.ModelViewSet):
-    queryset = Language.objects.all()
-    serializer_class = LanguageSerializer
-
-
-class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-
-
-class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+class LanguageViewSet(APIView):
+    def get(self, request):
+        languages = Language.objects.all()
+        serializer = LanguageSerializer(languages, many=True)
+        return Response(serializer.data)
 
 
-class ProductTranslationViewSet(viewsets.ModelViewSet):
-    queryset = ProductTranslation.objects.all()
+class CategoryViewSet(APIView):
+    def get(self, request):
+        categories = Category.objects.all()
+        serializer = CategorySerializer(categories, many=True)
+        return Response(serializer.data)
+
+
+class ProductViewSet(APIView):
+    def get(self, request):
+        products = Product.objects.all()
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+
+
+class ProductTranslationViewSet(APIView):
+    def get(self, request):
+        translations = ProductTranslation.objects.all()
+        serializer = ProductTranslationSerializer(translations, many=True)
+        return Response(serializer.data)
     serializer_class = ProductTranslationSerializer
 
 
@@ -83,6 +96,7 @@ class ProductTranslationViewDetail(APIView):
         language_id = self.request.query_params.get('language')
         product =  ProductTranslation.objects.filter(product_id=product_id, language_id=language_id)
         print(product)
+        print('request entered to product tranlation')
         if product.exists():
             print("here1")
             serializer = ProductTranslationSerializer(product,many=True)
@@ -96,5 +110,12 @@ class ProductTranslationViewDetail(APIView):
                 print("entered to default")
                 serializer = ProductTranslationSerializer(default_product)
                 return Response(serializer.data)
-        return Response(status=404)
+        return Response({"detail": " No product translation found"},status=200)
 
+
+class CategoriesDetailView(APIView):
+    def get(self,request,pk):
+        data = Category.objects.filter(pk=pk).first()
+
+        serializer = CategorySerializer(data)
+        return Response(serializer.data,status=200)

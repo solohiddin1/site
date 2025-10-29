@@ -11,6 +11,7 @@ from .models import (
 	Company,
 	CategoryTranslation
 )
+from django.conf import settings
 
 class CategoryTranlationSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -22,7 +23,13 @@ class CertificatesSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Certificates
 		fields = ['id', 'image', 'ordering']
-	
+
+	def get_image(self, obj):
+		request = self.context.get('request')
+		if obj.image and request:
+			return request.build_abdolute_uri(obj.image.url)
+		return f"{settings.BACKEND_URL}{obj.image.url}" if obj.image else None
+
 
 class CompanySerializer(serializers.ModelSerializer):
 	class Meta:
@@ -50,7 +57,6 @@ class ProductTranslationSerializer(serializers.ModelSerializer):
 		model = ProductTranslation
 		fields = ['id', 'language', 'name', 'description', 'slug']
 
-from django.conf import settings
 
 class ProductImageSerializer(serializers.ModelSerializer):
 	id = serializers.IntegerField(required=False)

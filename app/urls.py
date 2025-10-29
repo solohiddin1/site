@@ -3,16 +3,16 @@ from rest_framework.routers import DefaultRouter
 from .views import (LanguageViewSet, CategoryViewSet, 
     ProductImageViewSet, ProductViewSet, ProductTranslationViewSet, 
     ProductImageViewSet, CertificatesViewSet, CompanyViewSet, ProductByCategoryViewSet, ProductView,
-    ProductTranslationViewDetail, ProductImageView)
+    ProductTranslationViewDetail, ProductImageView, CategoriesDetailView)
 
 router = DefaultRouter()
-router.register(r'languages', LanguageViewSet)
-router.register(r'categories', CategoryViewSet)
+# router.register(r'languages', LanguageViewSet)
+# router.register(r'categories', CategoryViewSet)
 # router.register(r'products', ProductViewSet)
-router.register(r'product-translations', ProductTranslationViewSet)
+# router.register(r'product-translations', ProductTranslationViewSet)
 # router.register(r'product-images', ProductImageViewSet)
-router.register(r'certificates', CertificatesViewSet)
-router.register(r'companies', CompanyViewSet)
+# router.register(r'certificates', CertificatesViewSet)
+# router.register(r'companies', CompanyViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -20,8 +20,16 @@ urlpatterns = [
     path('products/<int:pk>/', ProductView.as_view(), name='product-images'),
 
     path('product-images/', ProductImageView.as_view(), name='product-detail'),
-
+    path('certificates/', CertificatesViewSet.as_view(), name='certificates'),
     path('product-translations/', ProductTranslationViewDetail.as_view(), name='product-translation-detail'),
+    
+    path('languages/', LanguageViewSet.as_view(), name='languages'),
+    path('categories/', CategoryViewSet.as_view(), name='categories'),  
+    path('companies/', CompanyViewSet.as_view(), name='companies'),
+    path('categories/<int:pk>/', CategoriesDetailView.as_view(), name='categories-detail'),  
+    # path('product-images/', ProductImageViewSet.as_view({'get': 'list'}), name='product-images-list'),
+    # path('product-images/<int:pk>/', ProductImageViewSet.as_view({'get': 'retrieve'}), name='product-image-detail'),
     # product-translations
+
     # path('products/')
 ]
