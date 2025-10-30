@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from .views import (LanguageViewSet, CategoryViewSet, 
     ProductImageViewSet, ProductViewSet, ProductTranslationViewSet, 
     ProductImageViewSet, CertificatesViewSet, CompanyViewSet, ProductByCategoryViewSet, ProductView,
-    ProductTranslationViewDetail, ProductImageView, CategoriesDetailView)
+    ProductTranslationViewDetail, ProductImageView, CategoriesDetailView,PartnersView)
 
 router = DefaultRouter()
 # router.register(r'languages', LanguageViewSet)
@@ -16,6 +16,7 @@ router = DefaultRouter()
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('partners/',PartnersView.as_view()),
     path('products/', ProductByCategoryViewSet.as_view({'get': 'list'}), name='product-images-list'),
     path('products/<int:pk>/', ProductView.as_view(), name='product-images'),
 

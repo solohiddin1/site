@@ -9,9 +9,16 @@ from .models import (
 	ProductImage,
 	Certificates,
 	Company,
-	CategoryTranslation
+	CategoryTranslation, 
+	Partners
 )
 from django.conf import settings
+
+class PartnersSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Partners
+		fields = ['name','image']
+
 
 class CategoryTranlationSerializer(serializers.ModelSerializer):
 	class Meta:

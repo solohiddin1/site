@@ -170,3 +170,10 @@ class Company(models.Model):
 
     def __str__(self):
         return f"Company: {self.name}"
+    
+
+class Partners(models.Model):
+    name = models.CharField()
+    image = models.ImageField( upload_to="partners", height_field=None, width_field=None, max_length=None)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.TimeField(auto_now=True)

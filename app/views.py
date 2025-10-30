@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .models import Certificates, Language, Category, Product, ProductTranslation, ProductImage, Company
+from .models import Certificates, Language, Category, Product, ProductTranslation, ProductImage, Company, Partners
 from .serilializers import (
     LanguageSerializer,
     CategorySerializer,
@@ -9,7 +9,8 @@ from .serilializers import (
     ProductImageSerializer,
     CertificatesSerializer,
     CompanySerializer,
-    CategoryTranlationSerializer
+    CategoryTranlationSerializer,
+    PartnersSerializer
 )
 from rest_framework.decorators import APIView
 from rest_framework.response import Response
@@ -17,6 +18,13 @@ from rest_framework.response import Response
 # Create your views here.
 
 # class CategoryTranslationSerializer(APIView)
+
+class PartnersView(APIView):
+    def get(self,request):
+        partners = Partners.objects.all()
+        serializer = PartnersSerializer(partners, many=True)
+        return Response(serializer.data)
+    
 
 class CertificatesViewSet(APIView):
     def get(self, request):
