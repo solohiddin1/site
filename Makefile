@@ -3,3 +3,6 @@ mig:
 
 runserver:
 	python manage.py runserver
+
+super:
+	python manage.py createsuperuser

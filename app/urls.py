@@ -1,9 +1,8 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import (LanguageViewSet, CategoryViewSet, 
-    ProductImageViewSet, ProductViewSet, ProductTranslationViewSet, 
-    ProductImageViewSet, CertificatesViewSet, CompanyViewSet, ProductByCategoryViewSet, ProductView,
-    ProductTranslationViewDetail, ProductImageView, CategoriesDetailView,PartnersView, NewsDetailView)
+from .views import (CategoryViewSet, 
+    CertificatesViewSet, CompanyViewSet, ProductByCategoryViewSet, ProductView,
+    ProductImageView, CategoriesDetailView,PartnersView, NewsDetailView)
 
 router = DefaultRouter()
 # router.register(r'languages', LanguageViewSet)
@@ -22,9 +21,9 @@ urlpatterns = [
 
     path('product-images/', ProductImageView.as_view(), name='product-detail'),
     path('certificates/', CertificatesViewSet.as_view(), name='certificates'),
-    path('product-translations/', ProductTranslationViewDetail.as_view(), name='product-translation-detail'),
-    
-    path('languages/', LanguageViewSet.as_view(), name='languages'),
+    # path('product-translations/', ProductTranslationViewDetail.as_view(), name='product-translation-detail'),
+    path('product-images/', ProductImageView.as_view(), name='product-images'),
+    # path('languages/', LanguageViewSet.as_view(), name='languages'),
     path('categories/', CategoryViewSet.as_view(), name='categories'),  
     path('companies/', CompanyViewSet.as_view(), name='companies'),
     path('categories/<int:pk>/', CategoriesDetailView.as_view(), name='categories-detail'),  

@@ -1,15 +1,12 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .models import Certificates, Language, Category, Product, ProductTranslation, ProductImage, Company, Partners
+from .models import Certificates, Category, Product, ProductImage, Company, Partners
 from .serilializers import (
-    LanguageSerializer,
     CategorySerializer,
     ProductSerializer,
-    ProductTranslationSerializer,
     ProductImageSerializer,
     CertificatesSerializer,
     CompanySerializer,
-    CategoryTranlationSerializer,
     PartnersSerializer
 )
 from rest_framework.decorators import APIView
@@ -38,13 +35,6 @@ class CompanyViewSet(APIView):
         serializer = CompanySerializer(companies, many=True)
         return Response(serializer.data)
 
-class LanguageViewSet(APIView):
-    def get(self, request):
-        languages = Language.objects.all()
-        serializer = LanguageSerializer(languages, many=True)
-        return Response(serializer.data)
-
-
 class CategoryViewSet(APIView):
     def get(self, request):
         categories = Category.objects.all()
@@ -57,14 +47,6 @@ class ProductViewSet(APIView):
         products = Product.objects.all()
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
-
-
-class ProductTranslationViewSet(APIView):
-    def get(self, request):
-        translations = ProductTranslation.objects.all()
-        serializer = ProductTranslationSerializer(translations, many=True)
-        return Response(serializer.data)
-    serializer_class = ProductTranslationSerializer
 
 
 class ProductImageViewSet(viewsets.ModelViewSet):
@@ -98,27 +80,28 @@ class ProductImageView(APIView):
         return Response(serializer.data)
 
 
-class ProductTranslationViewDetail(APIView):
-    def get(self, request):
-        product_id = self.request.query_params.get('product')
-        language_id = self.request.query_params.get('language')
-        product =  ProductTranslation.objects.filter(product_id=product_id, language_id=language_id)
-        print(product)
-        print('request entered to product tranlation')
-        if product.exists():
-            print("here1")
-            serializer = ProductTranslationSerializer(product,many=True)
-            return Response(serializer.data)
-        else:
-            print("here2")
-            default_lang = Language.objects.get(is_default=True)
-            print(default_lang)
-            default_product = ProductTranslation.objects.filter(product_id=product_id, language_id=default_lang.id).first()
-            if default_product:
-                print("entered to default")
-                serializer = ProductTranslationSerializer(default_product)
-                return Response(serializer.data)
-        return Response({"detail": " No product translation found"},status=200)
+# class ProductTranslationViewDetail(APIView):
+#     def get(self, request):
+#         product_id = self.request.query_params.get('product')
+#         language_id = self.request.query_params.get('language')
+#         product =  None
+#         # product =  ProductTranslation.objects.filter(product_id=product_id, language_id=language_id)
+#         print(product)
+#         print('request entered to product tranlation')
+#         if product.exists():
+#             print("here1")
+#             serializer = ProductTranslationSerializer(product,many=True)
+#             return Response(serializer.data)
+#         else:
+#             print("here2")
+#             default_lang = Language.objects.get(is_default=True)
+#             print(default_lang)
+#             default_product = ProductTranslation.objects.filter(product_id=product_id, language_id=default_lang.id).first()
+#             if default_product:
+#                 print("entered to default")
+#                 serializer = ProductTranslationSerializer(default_product)
+#                 return Response(serializer.data)
+#         return Response({"detail": " No product translation found"},status=200)
 
 
 class CategoriesDetailView(APIView):
