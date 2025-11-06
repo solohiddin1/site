@@ -127,3 +127,11 @@ class CategoriesDetailView(APIView):
 
         serializer = CategorySerializer(data)
         return Response(serializer.data,status=200)
+
+
+class NewsDetailView(APIView):
+    def get(self,request):
+        # data = Category.objects.filter(is_news=True)
+
+        # serializer = CategorySerializer(data,many=True)
+        return Response(status=200)

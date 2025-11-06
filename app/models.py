@@ -177,3 +177,32 @@ class Partners(models.Model):
     image = models.ImageField( upload_to="partners", height_field=None, width_field=None, max_length=None)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.TimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Partner: {self.name}"
+    
+
+class ServiceBase(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.TimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+class Services(ServiceBase):
+    PLACES_CHOICES = [
+        ('Andijan', 'Andijan'),
+        ('Bukhara', 'Bukhara'),
+        ('Samarkand', 'Samarkand'),
+        ('Tashkent', 'Tashkent'),
+        ('Fergana', 'Fergana'),
+    ]
+    title = models.CharField(max_length=255)
+    location_url = models.URLField(max_length=2000)
+    location = models.CharField(max_length=255,choices=PLACES_CHOICES)
+
+    def __str__(self):
+        return f"Service: {self.title}"
